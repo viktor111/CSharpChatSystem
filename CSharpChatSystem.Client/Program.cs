@@ -1,3 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using CSharpChatSystem.Client;
 
-Console.WriteLine("Hello, World!");
+var client = new Client();
+
+await client.RunClient();

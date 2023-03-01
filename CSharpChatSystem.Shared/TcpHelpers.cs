@@ -3,7 +3,7 @@ using System.Text;
 
 namespace CSharpChatSystem.Shared;
 
-public class TcpHelpers
+public static class TcpHelpers
 {
     public static async Task WriteMessage(string message, NetworkStream stream)
     {
@@ -17,12 +17,10 @@ public class TcpHelpers
 
     public static async Task<string> ReadMessage(NetworkStream stream)
     {
-        // Read len
         var messageByteLen = new byte[4];
         _ = await stream.ReadAsync(messageByteLen);
         var lenOfMessage = BitConverter.ToInt32(messageByteLen);
 
-        // Read message with len
         var messageBytes = new byte[lenOfMessage];
         _ = await stream.ReadAsync(messageBytes);
         var message = Encoding.UTF8.GetString(messageBytes);
