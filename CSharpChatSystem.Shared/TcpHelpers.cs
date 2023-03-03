@@ -8,7 +8,7 @@ public static class TcpHelpers
     public static async Task WriteMessage(string message, NetworkStream stream)
     {
         var messageLen = message.Length;
-        var messageLenBeBytes = IntToBeBytes(messageLen);
+        var messageLenBeBytes = BitConverter.GetBytes(messageLen);
         var messageBytes = Encoding.UTF8.GetBytes(message);
 
         await stream.WriteAsync(messageLenBeBytes);
@@ -26,16 +26,5 @@ public static class TcpHelpers
         var message = Encoding.UTF8.GetString(messageBytes);
 
         return message;
-    }
-    
-    private static byte[] IntToBeBytes(int value)
-    {
-        var bytes = BitConverter.GetBytes(value);
-        
-        if (BitConverter.IsLittleEndian)
-        {
-            Array.Reverse(bytes);
-        }
-        return bytes;
     }
 }

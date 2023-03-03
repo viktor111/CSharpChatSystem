@@ -20,7 +20,7 @@ public class Client
         var welcomeMessage = await TcpHelpers.ReadMessage(stream);
         Console.WriteLine(welcomeMessage);
 
-       // _ = Task.Run(() => ReadMessages(stream));
+       _ = Task.Run(() => ReadMessages(stream));
 
         while (true)
         {
@@ -34,6 +34,7 @@ public class Client
         while (true)
         {
             var message = await TcpHelpers.ReadMessage(stream);
+
             if(string.IsNullOrEmpty(message)) continue;
             Console.WriteLine(message);
         }

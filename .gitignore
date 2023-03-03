@@ -3,3 +3,10 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.vs/CSharpChatSystem/DesignTimeBuild/
+
+.vs/CSharpChatSystem/FileContentIndex/
+
+.vs/CSharpChatSystem/v17/
+
+.vs/ProjectEvaluation/

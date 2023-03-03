@@ -21,7 +21,7 @@ public class Server
         while (true)
         {
             var client = await listener.AcceptTcpClientAsync();
-            _ = Task.Run(() => HandleConnection(client));
+            _ = Task.Run(async () => await HandleConnection(client));
         }
     }
 
@@ -30,7 +30,7 @@ public class Server
         Logger.LogInformation("Client connected");
         var stream = tcpClient.GetStream();
 
-        var name= await TcpHelpers.ReadMessage(stream);
+        var name = (await TcpHelpers.ReadMessage(stream)).Trim();
         if (_clients.ContainsKey(name))
         {
             Logger.LogInformation($"Name {name} already taken");
@@ -62,11 +62,7 @@ public class Server
     
     private async Task BroadcastMessage(string message)
     {
-        Logger.LogInformation("Broadcasting message to all clients");
-
-        var tempClients = new ConcurrentDictionary<string, TcpClient>(_clients);
-
-        foreach (var client in tempClients)
+        foreach (var client in _clients)
         {
             await TcpHelpers.WriteMessage(message, client.Value.GetStream());
         }
