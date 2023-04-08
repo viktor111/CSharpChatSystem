@@ -5,6 +5,10 @@ namespace CSharpChatSystem.Shared;
 public static class Logger
 {
     private static readonly object LockObject = new object();
+    public static void LogMessage(string message, object obj = null)
+    {
+        WriteLog("MESSAGE", message, obj);
+    }
 
     public static void LogInformation(string message, object obj = null)
     {

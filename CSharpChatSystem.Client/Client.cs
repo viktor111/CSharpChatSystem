@@ -25,6 +25,13 @@ public class Client
         while (true)
         {
             var message = Console.ReadLine();
+            if(message == "/help")
+            {
+                Console.WriteLine("Commands: ");
+                Console.WriteLine("/exit");
+                Console.WriteLine("/help");
+                continue;
+            }
             await TcpHelpers.WriteMessage(message, stream);
         }
     }

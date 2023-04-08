@@ -43,7 +43,7 @@ public class Server
         await TcpHelpers.WriteMessage($"Welcome {name}", stream);
         Logger.LogInformation($"{name} joined the chat");
         
-        await BroadcastMessage($"{name} joined the chat");
+        await BroadcastMessage($"{name} joined the chat", name);
         Logger.LogInformation("Broadcast message joined the chat to all clients");
         
         while (true)
@@ -52,11 +52,15 @@ public class Server
             if (message == "/exit")
             {
                 Logger.LogInformation($"Client {name} disconnecting...");
+
+                await BroadcastMessage($"{name} leaving the chat", name);
+
                 _clients.TryRemove(name, out _);
                 tcpClient.Close();
                 break;
             }
-            await BroadcastMessage($"{name}: {message}");
+            Logger.LogMessage($"{name}: {message}");
+            await BroadcastMessage($"{name}: {message}", name);
         }
     }
     
@@ -68,4 +72,12 @@ public class Server
         }
     }
 
+    private async Task BroadcastMessage(string message, string clientName)
+    {
+        foreach (var client in _clients)
+        {
+            if (client.Key == clientName) continue;
+            await TcpHelpers.WriteMessage(message, client.Value.GetStream());
+        }
+    }
 }
